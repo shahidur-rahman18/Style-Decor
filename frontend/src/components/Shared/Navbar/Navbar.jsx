@@ -3,11 +3,9 @@ import { AiOutlineMenu } from "react-icons/ai";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import avatarImg from "../../../assets/images/placeholder.jpg";
-import logo from "../../../assets/images/logo-flat.png";
-import Button from "../Button/Button";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
@@ -18,13 +16,14 @@ const navLinks = [
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   return (
-    <div className="fixed w-full bg-white z-10 shadow-sm">
+    <div className="fixed w-full bg-white z-100 shadow-sm">
       <div className="py-4 ">
         <Container>
           <div className="flex flex-row  items-center justify-between gap-3 md:gap-0">
-           
+
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
               <motion.div
@@ -49,39 +48,73 @@ const Navbar = () => {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="text-muted-foreground hover:text-foreground text-sm font-medium"
+                  className={`text-sm font-medium transition-colors relative ${location.pathname === link.href
+                    ? 'text-primary'
+                    : ' text-gray-700 hover:text-black'
+                    }`}
+
                 >
                   {link.label}
+
+                  {location.pathname === link.href && (
+                    <motion.div
+                      layoutId="navbar-indicator"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-primary"
+                    />
+                  )}
                 </Link>
               ))}
-            
+
             </div>
 
-            {/* Dropdown Menu */}
+            {/* ===== CHANGE HERE: Auth Buttons & Dropdown Container ===== */}
             <div className="relative">
               <div className="flex flex-row items-center gap-3">
-                {/* Dropdown btn */}
-                <div
-                  onClick={() => setIsOpen(!isOpen)}
-                  className="p-4 md:py-1 md:px-2 border border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
-                >
-                  <AiOutlineMenu />
-                  <div className="hidden md:block">
-                    {/* Avatar */}
-                    <img
-                      className="rounded-full"
-                      referrerPolicy="no-referrer"
-                      src={user && user.photoURL ? user.photoURL : avatarImg}
-                      alt="profile"
-                      height="30"
-                      width="30"
-                    />
+                {/* ===== CHANGE 1: Show Login & Get Start buttons ONLY when user is NOT logged in ===== */}
+                {!user ? (
+                  <>
+                    <Link to="/login" className="btn btn-primary rounded-xl">
+                      Login
+                    </Link>
+                    <Link to="/signup" className="btn btn-primary rounded-xl">
+                      Get Start
+                    </Link>
+                  </>
+                ) : null}
+
+                {/* ===== CHANGE 2: Show Dropdown menu button ONLY when user IS logged in ===== */}
+                {user && (
+                  <div
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="p-4 md:py-1 md:px-2 border border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+                  >
+                    <AiOutlineMenu />
+                    <div className="hidden md:block">
+                      {/* Avatar */}
+                      <img
+                        className="rounded-full"
+                        referrerPolicy="no-referrer"
+                        src={user && user.photoURL ? user.photoURL : avatarImg}
+                        alt="profile"
+                        height="30"
+                        width="30"
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-              {isOpen && (
-                <div className="absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm">
-                  <div className="flex flex-col cursor-pointer">
+
+
+
+              {/* ===== CHANGE 3: Show dropdown menu only when user is logged in AND dropdown is open ===== */}
+              {user && isOpen && (
+                <div
+                  className="absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm">
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="flex flex-col cursor-pointer">
                     {/*  THIS BLOCK — Mobile navigation links */}
                     <div className="block md:hidden">
                       {navLinks.map((link) => (
@@ -110,23 +143,8 @@ const Navbar = () => {
                           Logout
                         </div>
                       </>
-                    ) : (
-                      <>
-                        <Link
-                          to="/login"
-                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
-                        >
-                          Login
-                        </Link>
-                        <Link
-                          to="/signup"
-                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
-                        >
-                          Sign Up
-                        </Link>
-                      </>
-                    )}
-                  </div>
+                    ) : null}
+                  </motion.div>
                 </div>
               )}
             </div>
