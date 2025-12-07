@@ -105,3 +105,21 @@
   width: 100%;
   border-radius: var(--radius);
 }
+
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0); /* Start and end position (base) */
+    }
+    50% {
+        transform: translateY(-8px); /* Mid-point position (bounced up by 8px) */
+    }
+}
+
+/* [REQUIRED CHANGE] Apply the keyframes to the utility class */
+.animate-float {
+    animation: float 2s ease-in-out infinite;
+    /* 3s: Duration of one full cycle */
+    /* ease-in-out: Smooth acceleration and deceleration */
+    /* infinite: Makes it continuous */
+}

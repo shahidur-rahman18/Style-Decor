@@ -1,11 +1,11 @@
 import Container from "../Container";
 import { AiOutlineMenu } from "react-icons/ai";
-// eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from "react";
+import { motion } from 'framer-motion';
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import avatarImg from "../../../assets/images/placeholder.jpg";
+
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
@@ -13,16 +13,27 @@ const navLinks = [
   { href: "/coverage", label: "Coverage" },
   { href: "/contact", label: "Contact" },
 ];
+
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const [isSticky, setIsSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="fixed w-full bg-white z-50 shadow-sm">
-      <div className="py-4">
+    <div className={`w-full glass-card border-0 shadow-sm transition-all duration-300 ${isSticky ? 'fixed top-0 left-0 right-0 z-50 shadow-lg' : ''}`}>
+      <div className="py-4 ">
         <Container>
-          <div className="flex flex-row  items-center justify-between gap-3 md:gap-0 ">
+          <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2">
@@ -36,23 +47,21 @@ const Navbar = () => {
                     S
                   </span>
                 </div>
-                <span className="font-display text-xl font-semibold text-foreground">
+                <span className="font-display text-xl font-semibold">
                   StyleDecor
                 </span>
               </motion.div>
             </Link>
 
-            {/*THIS BLOCK — Desktop Navigation Menu*/}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
-                  className={`text-sm font-medium transition-colors relative ${location.pathname === link.href
-                    ? 'text-primary'
-                    : ' text-gray-700 hover:text-black'
-                    }`}
-
+                  className={`text-sm font-medium transition relative ${
+                    location.pathname === link.href ? 'text-primary' : 'text-gray-700 hover:text-black'
+                  }`}
                 >
                   {link.label}
 
@@ -64,37 +73,46 @@ const Navbar = () => {
                   )}
                 </Link>
               ))}
-
             </div>
 
-            {/* ===== CHANGE HERE: Auth Buttons & Dropdown Container ===== */}
+            {/* RIGHT SIDE */}
             <div className="relative">
               <div className="flex flex-row items-center gap-3">
-                {/* ===== CHANGE 1: Show Login & Get Start buttons ONLY when user is NOT logged in ===== */}
-                {!user ? (
-                  <>
+
+                {/* AUTH BUTTONS → Only on large screens */}
+                {!user && (
+                  <div className="hidden md:flex items-center gap-3">
                     <Link to="/login" className="btn btn-primary rounded-xl">
                       Login
                     </Link>
                     <Link to="/signup" className="btn btn-primary rounded-xl">
                       Get Start
                     </Link>
-                  </>
-                ) : null}
+                  </div>
+                )}
 
-                {/* ===== CHANGE 2: Show Dropdown menu button ONLY when user IS logged in ===== */}
+                {/* MENU ICON → For small & md screens */}
+                {!user && (
+                  <div
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="flex md:hidden p-3 border border-neutral-300 rounded-full cursor-pointer"
+                  >
+                    <AiOutlineMenu />
+                  </div>
+                )}
+
+                {/* User avatar dropdown (only when logged in) */}
                 {user && (
                   <div
                     onClick={() => setIsOpen(!isOpen)}
-                    className="p-4 md:py-1 md:px-2 border border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
+                    className="p-4 md:py-1 md:px-2 border border-neutral-200 flex items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition"
                   >
                     <AiOutlineMenu />
                     <div className="hidden md:block">
-                      {/* Avatar */}
                       <img
                         className="rounded-full"
                         referrerPolicy="no-referrer"
-                        src={user && user.photoURL ? user.photoURL : avatarImg}
+                        src={user.photoURL || avatarImg}
                         alt="profile"
                         height="30"
                         width="30"
@@ -104,18 +122,16 @@ const Navbar = () => {
                 )}
               </div>
 
-
-
-              {/* ===== CHANGE 3: Show dropdown menu only when user is logged in AND dropdown is open ===== */}
-              {user && isOpen && (
-                <div
-                  className="absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm">
+              {/* DROPDOWN MENU */}
+              {isOpen && (
+                <div className="absolute rounded-xl shadow-md w-[40vw] md:w-[10vw] bg-white overflow-hidden right-0 top-12 text-sm">
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
+                    animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="flex flex-col cursor-pointer">
-                    {/*  THIS BLOCK — Mobile navigation links */}
+                    className="flex flex-col cursor-pointer"
+                  >
+                    {/* Mobile Navigation */}
                     <div className="block md:hidden">
                       {navLinks.map((link) => (
                         <Link
@@ -128,6 +144,7 @@ const Navbar = () => {
                       ))}
                     </div>
 
+                    {/* Logged-in Items */}
                     {user ? (
                       <>
                         <Link
@@ -136,6 +153,7 @@ const Navbar = () => {
                         >
                           Dashboard
                         </Link>
+
                         <div
                           onClick={logOut}
                           className="px-4 py-3 hover:bg-neutral-100 transition font-semibold cursor-pointer"
@@ -143,10 +161,26 @@ const Navbar = () => {
                           Logout
                         </div>
                       </>
-                    ) : null}
+                    ) : (
+                      <>
+                        <Link
+                          to="/login"
+                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                        >
+                          Login
+                        </Link>
+                        <Link
+                          to="/signup"
+                          className="px-4 py-3 hover:bg-neutral-100 transition font-semibold"
+                        >
+                          Get Start
+                        </Link>
+                      </>
+                    )}
                   </motion.div>
                 </div>
               )}
+
             </div>
           </div>
         </Container>
