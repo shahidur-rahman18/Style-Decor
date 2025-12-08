@@ -2,7 +2,7 @@ import Container from "../Container";
 import { AiOutlineMenu } from "react-icons/ai";
 // eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { Link, useLocation } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 import avatarImg from "../../../assets/images/placeholder.jpg";
@@ -19,19 +19,12 @@ const Navbar = () => {
   const { user, logOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const [isSticky, setIsSticky] = useState(false);
+  
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // ${isSticky ? 'fixed top-0 left-0 right-0 z-100 shadow-lg' : ''}
 
   return (
-    <div className={`w-full glass-card border-0 shadow-sm transition-all duration-300 ${isSticky ? 'fixed top-0 left-0 right-0 z-50 shadow-lg' : ''}`}>
+    <div className={`fixed top-0 w-full bg-base-300 glass-card border-0 shadow-sm transition-all duration-300 z-50`}>
       <div className="py-4 ">
         <Container>
           <div className="flex flex-row items-center justify-between gap-3 md:gap-0">

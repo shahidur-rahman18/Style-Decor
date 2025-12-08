@@ -7,6 +7,8 @@ import { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
+import LottieAnim from "../../components/Animation/LottieAnim";
+import Reveal from "../../components/Animation/Reveal";
 
 const SignUp = () => {
   const { createUser, updateUserProfile, signInWithGoogle, loading } =
@@ -58,7 +60,8 @@ const SignUp = () => {
   };
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">
-      <motion.div
+     <Reveal>
+       <div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col max-w-md p-6 rounded-md sm:p-10 text-gray-900"
@@ -213,7 +216,12 @@ const SignUp = () => {
           </Link>
           
         </p>
-      </motion.div>
+      </div>
+     </Reveal>
+
+     <div className="hidden md:block overflow-hidden  " >
+    <LottieAnim></LottieAnim>
+      </div>
     </div>
   );
 };

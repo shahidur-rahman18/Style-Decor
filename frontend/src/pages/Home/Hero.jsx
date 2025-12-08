@@ -14,7 +14,7 @@ const stats = [
 
 const Hero = () => {
   return (
-    <section className="relative flex items-center  overflow-hidden bg-[#F5F0E7] lg:min-h-screen">
+    <section className="relative -mt-20 flex items-center  overflow-hidden bg-[#F5F0E7] lg:min-h-screen">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img

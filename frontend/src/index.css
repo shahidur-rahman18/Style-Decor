@@ -1,3 +1,7 @@
+/* --- ALWAYS FIRST --- */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+/* --- Tailwind & DaisyUI next --- */
 @import "tailwindcss";
 @plugin "daisyui";
 
@@ -5,90 +9,13 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary:#DDA23C;
-  --color-secondary:#a35061;
+  --color-primary: #dda23c;
+  --color-secondary: #a35061;
 }
 
-/* --- Google Fonts --- */
-/* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap');
- */
-/* --- Custom Root Variables (Tailwind v4 safe) --- */
-@theme {
-  --background: 40 20% 98%;
-  --foreground: 220 20% 15%;
-  --card: 0 0% 100%;
-  --card-foreground: 220 20% 15%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 220 20% 15%;
-
-  --primary: 220 20% 18%;
-  --primary-foreground: 40 20% 98%;
-  --secondary: 38 40% 92%;
-  --secondary-foreground: 220 20% 18%;
-
-  --muted: 40 15% 94%;
-  --muted-foreground: 220 10% 45%;
-
-  --accent: 38 70% 55%;
-  --accent-foreground: 220 20% 15%;
-
-  --destructive: 0 72% 51%;
-  --destructive-foreground: 0 0% 100%;
-
-  --border: 40 20% 88%;
-  --input: 40 20% 88%;
-  --ring: 38 70% 55%;
-
-  --radius: 0.75rem;
-
-  /* Design Tokens */
-  --gold: 38 70% 55%;
-  --gold-light: 38 60% 70%;
-  --gold-dark: 38 75% 42%;
-  --champagne: 38 40% 92%;
-  --cream: 40 30% 96%;
-  --charcoal: 220 20% 18%;
-  --charcoal-light: 220 15% 30%;
-  --ivory: 45 30% 97%;
-  --rose-gold: 10 50% 70%;
-  --sage: 140 20% 75%;
-}
-
-/* --- Custom Utility Classes --- */
-@utility glass-card {
-  @apply bg-white/80 backdrop-blur-md border border-[var(--border)];
-}
-
-@utility text-gradient-gold {
-  background-image: linear-gradient(135deg, hsl(38 70% 55%), hsl(38 60% 70%));
-  @apply bg-clip-text text-transparent;
-}
-
-@utility btn-gold {
-  @apply bg-[hsl(38_70%_55%)] text-[hsl(220_20%_15%)] shadow-lg rounded-lg transition-all;
-}
-.btn-gold:hover {
-  transform: translateY(-2px);
-  opacity: .9;
-}
-
-/* --- Animation Utilities --- */
-@utility animate-fade-up {
-  animation: fadeUp 0.6s ease-out forwards;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@utility animate-scale-in {
-  animation: scaleIn 0.4s ease-out forwards;
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(.95); }
-  to { opacity: 1; transform: scale(1); }
+/* --- Global Styles --- */
+* {
+  font-family: "Roboto", sans-serif;
 }
 
 /* --- Buttons Override --- */
@@ -99,27 +26,7 @@
   @apply opacity-90;
 }
 
-/* Leaflet map container */
-.leaflet-container {
-  height: 100%;
-  width: 100%;
-  border-radius: var(--radius);
-}
-
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0); /* Start and end position (base) */
-    }
-    50% {
-        transform: translateY(-8px); /* Mid-point position (bounced up by 8px) */
-    }
-}
-
-/* [REQUIRED CHANGE] Apply the keyframes to the utility class */
+/* --- Custom Animations --- */
 .animate-float {
-    animation: float 2s ease-in-out infinite;
-    /* 3s: Duration of one full cycle */
-    /* ease-in-out: Smooth acceleration and deceleration */
-    /* infinite: Makes it continuous */
+  animation: float 2s ease-in-out infinite;
 }

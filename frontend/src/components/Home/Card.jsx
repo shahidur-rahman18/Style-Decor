@@ -1,8 +1,64 @@
-import { Link } from 'react-router'
+import { Link } from "react-router";
+import { Star } from "lucide-react";
+import imge from "../../assets/hero-decoration.jpg";
+import Reveal from "../Animation/Reveal";
 
 const Card = () => {
   return (
-    <Link
+    <Reveal>
+      <div class=" transition delay-150 rounded-2xl duration-500 ease-in-out hover:scale-110 hover:rounded-2xl ">
+        <Link
+          to={`/plant/1`}
+          className="max-w-sm w-full rounded-b-2xl overflow-hidden "
+        >
+          {/* Image */}
+          <div className="h-48 w-full rounded-t-2xl overflow-hidden">
+            <img
+              src={imge}
+              alt="Service"
+              className="group-hover:scale-110  h-full w-full object-cover"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="p-5 bg-base-300  ">
+            {/* Badge */}
+            <span className="inline-block px-3 py-1 text-sm rounded-full bg-yellow-200 text-yellow-700 font-medium">
+              Home
+            </span>
+
+            {/* Title */}
+            <h2 className="mt-3 text-xl font-semibold text-primary">
+              Luxury Home Interior Design
+            </h2>
+
+            {/* Description */}
+            <p className="mt-1 text-gray-500 text-sm leading-relaxed">
+              Transform your living space with our premium home decoration
+              service.
+            </p>
+
+            {/* Bottom Row */}
+            <div className="mt-4 flex items-center justify-between">
+              <p className="text-lg font-bold text-black">
+                ৳15,000<span className="text-sm text-gray-500">/per room</span>
+              </p>
+
+              <div className="flex items-center gap-1 text-yellow-500">
+                <Star size={18} fill="currentColor" />
+                <span className="font-medium text-gray-700">4.9</span>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </div>
+    </Reveal>
+  );
+};
+
+export default Card;
+
+/* <Link
       to={`/plant/1`}
       className='col-span-1 cursor-pointer group shadow-xl p-3 rounded-xl'
     >
@@ -42,8 +98,4 @@ const Card = () => {
           <div className='font-semibold'> Price: 15$</div>
         </div>
       </div>
-    </Link>
-  )
-}
-
-export default Card
+    </Link> */
