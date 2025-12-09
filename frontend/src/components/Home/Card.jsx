@@ -6,22 +6,22 @@ import Reveal from "../Animation/Reveal";
 const Card = () => {
   return (
     <Reveal>
-      <div class=" transition delay-150 rounded-2xl duration-500 ease-in-out hover:scale-110 hover:rounded-2xl ">
+      <div class=" transition delay-150 rounded-xl duration-500 ease-in-out hover:scale-110 hover:rounded-2xl ">
         <Link
           to={`/plant/1`}
-          className="max-w-sm w-full rounded-b-2xl overflow-hidden "
+          className="max-w-sm w-full rounded-2xl overflow-hidden "
         >
           {/* Image */}
           <div className="h-48 w-full rounded-t-2xl overflow-hidden">
             <img
               src={imge}
               alt="Service"
-              className="group-hover:scale-110  h-full w-full object-cover"
+              className="group-hover:scale-110   h-full w-full object-cover"
             />
           </div>
 
           {/* Content */}
-          <div className="p-5 bg-base-300  ">
+          <div className="p-5 bg-base-300 rounded-2xl ">
             {/* Badge */}
             <span className="inline-block px-3 py-1 text-sm rounded-full bg-yellow-200 text-yellow-700 font-medium">
               Home
