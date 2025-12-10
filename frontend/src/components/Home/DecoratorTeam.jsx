@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import Reveal from "../Animation/Reveal";
+import Container from '../Shared/Container'
 
 const decorators = [
   {
@@ -43,7 +44,8 @@ const decorators = [
 export default function DecoratorTeam() {
   return (
    
-     <div className="w-full py-16 bg-[#F7F4EF]">
+    <Container>
+      <div className="w-full py-16 bg-[#F7F4EF]">
       {/* Heading */}
     <Reveal>
           <div className="text-center mb-12">
@@ -124,6 +126,7 @@ export default function DecoratorTeam() {
       </div>
       </Reveal>
     </div>
+    </Container>
    
   );
 }

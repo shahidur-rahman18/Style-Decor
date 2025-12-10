@@ -1,9 +1,13 @@
 import React from 'react';
 import DecoratorTeam from '../../components/Home/DecoratorTeam';
 import Reveal from '../../components/Animation/Reveal';
+import RevealLeftToRight from '../../components/Animation/RevealLeftToRight';
 
 const About = () => {
   // Data for the statistics section
+  const image1 ='https://i.ibb.co.com/HLV0hnDV/photo-1741969494307-55394e3e4071-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg'
+  const image2 ='https://i.ibb.co.com/Swpn9MNc/premium-photo-1691861595088-b2c02e156557-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg'
+  const image3 ='https://i.ibb.co.com/bjy88nw9/premium-photo-1698249759490-f339e7c861e1-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg'
   const stats = [
     { label: 'Years of Excellence', value: '8+', icon: '🏆' },
     { label: 'Happy Clients', value: '2,500+', icon: '🤝' },
@@ -34,7 +38,8 @@ const About = () => {
       <div className="bg-gray-50 py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Headline Section */}
-          <div className="text-center mb-12">
+          <RevealLeftToRight>
+            <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
               Crafting Beautiful Spaces 
               <span className="text-yellow-600 ml-2">Since 2016</span>
@@ -43,15 +48,18 @@ const About = () => {
               StyleDecor began with a simple vision: to transform ordinary spaces into extraordinary experiences. Today, we're proud to be one of the leading decoration companies, serving thousands of satisfied clients.
             </p>
           </div>
+          </RevealLeftToRight>
         </div>
 
         {/* Statistics Bar */}
         <div className="bg-gray-800 py-12">
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
            <Reveal>
-             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+             <div className="grid grid-cols-1  md:grid-cols-4 gap-8">
               {stats.map((stat) => (
-                <StatCard key={stat.label} {...stat} />
+              
+                <StatCard  key={stat.label} {...stat} />
+              
               ))}
             </div>
            </Reveal>
@@ -86,10 +94,22 @@ const About = () => {
             </div>
 
             {/* Placeholder Visuals (Empty beige blocks from the design) */}
-            <div className="hidden lg:grid grid-cols-2 grid-rows-2 gap-4">
-              <div className="bg-amber-100/50 rounded-lg h-full p-8 col-span-2"></div>
-              <div className="bg-amber-100/50 rounded-lg h-full p-8 row-span-1"></div>
-              <div className="bg-amber-100/50 rounded-lg h-full p-8 row-span-1"></div>
+            <div className="hidden lg:grid grid-cols-2 grid-rows-2 gap-2">
+              <div className=" rounded-xl h-full p-4 col-span-2">
+              <RevealLeftToRight>
+                <img src="https://i.ibb.co.com/HLV0hnDV/photo-1741969494307-55394e3e4071-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg" 
+              className='rounded-2xl '
+              alt="" />
+              </RevealLeftToRight>
+              </div>
+              <div className="rounded-lg h-full  row-span-1">
+              <Reveal><img src="https://i.ibb.co.com/Swpn9MNc/premium-photo-1691861595088-b2c02e156557-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg"
+               className='rounded-2xl ' alt="" /></Reveal>
+              </div>
+              <div className=" rounded-lg h-full row-span-1">
+              <Reveal><img src="https://i.ibb.co.com/bjy88nw9/premium-photo-1698249759490-f339e7c861e1-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg" 
+               className='rounded-2xl 'alt="" /></Reveal>
+              </div>
             </div>
           </div>
 
