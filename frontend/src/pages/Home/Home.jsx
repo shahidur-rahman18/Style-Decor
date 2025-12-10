@@ -2,6 +2,9 @@ import { useState } from 'react';
 import Plants from '../../components/Home/Plants'
 import Hero from './Hero'
 import Reveal from '../../components/Animation/Reveal';
+import DecoratorTeam from '../../components/Home/DecoratorTeam';
+import { ArrowBigRight, Clock } from 'lucide-react';
+import { Link } from 'react-router';
 
 const Home = () => {
   const [services, setServices] = useState([]);
@@ -11,14 +14,26 @@ const Home = () => {
     <div>
       <Hero></Hero>
       <Reveal>
-        <div className='text-center mt-10' >
-          <p className='text-primary font-bold ' >Our Services </p>
-          <h1 className='mt-2 mb-4 text-3xl  lg:text-5xl font-bold' >Decoration Packages
-            <span className='text-primary text-3xl  lg:text-5xl font-bold'> For Every Occasion</span> </h1>
-          <p className='text-gray-400 text-sm ' > From intimate gatherings to grand celebrations, we have the perfect decoration solution for your special moments. </p>
+        <div className="text-center mb-12 py-12 ">
+          <h3 className="font-bold  text-primary tracking-widest">Our Services</h3>
+          <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 mt-2">
+            Decoration Packages<span className="text-yellow-600"> For Every Occasion</span>
+          </h1>
+          <p className="text-gray-400 mt-4 max-w-2xl mx-auto">
+            From intimate gatherings to grand celebrations, we have the perfect decoration solution for your special moments.
+          </p>
         </div>
       </Reveal>
       <Plants />
+      <Reveal>
+        <div className='flex items-center justify-center py-12' >
+          <Link to='/services' className="bg-yellow-600 text-center hover:bg-yellow-700 text-gray-900 font-semibold py-3 px-6 rounded shadow-lg transition duration-300 flex items-center justify-center">
+            Book Consultation<ArrowBigRight className="w-4 h-4 ml-2" />
+          </Link>
+        </div>
+      </Reveal>
+      <DecoratorTeam></DecoratorTeam>
+      
 
     </div>
   )
