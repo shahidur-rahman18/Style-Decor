@@ -3,6 +3,8 @@ import Heading from '../../components/Shared/Heading'
 import Button from '../../components/Shared/Button/Button'
 import PurchaseModal from '../../components/Modal/PurchaseModal'
 import { useState } from 'react'
+import { Star } from "lucide-react";
+import image from '../../assets/hero-decoration.jpg'
 
 const PlantDetails = () => {
   let [isOpen, setIsOpen] = useState(false)
@@ -13,83 +15,119 @@ const PlantDetails = () => {
 
   return (
     <Container>
-      <div className='mx-auto flex flex-col lg:flex-row justify-between w-full gap-12'>
-        {/* Header */}
-        <div className='flex flex-col gap-6 flex-1'>
-          <div>
-            <div className='w-full overflow-hidden rounded-xl'>
-              <img
-                className='object-cover w-full'
-                src='https://i.ibb.co/DDnw6j9/1738597899-golden-money-plant.jpg'
-                alt='header image'
-              />
-            </div>
-          </div>
-        </div>
-        <div className='md:gap-10 flex-1'>
-          {/* Plant Info */}
-          <Heading
-            title={'Money Plant'}
-            subtitle={`Category: ${'Succulent'}`}
-          />
-          <hr className='my-6' />
-          <div
-            className='
-          text-lg font-light text-neutral-500'
-          >
-            Professionally deliver sticky testing procedures for next-generation
-            portals. Objectively communicate just in time infrastructures
-            before.
-          </div>
-          <hr className='my-6' />
+       <section className="py-10">
+      <div className="max-w-5xl mx-auto px-4 lg:px-0">
 
-          <div
-            className='
-                text-xl 
-                font-semibold 
-                flex 
-                flex-row 
-                items-center
-                gap-2
-              '
-          >
-            <div>Seller: Shakil Ahmed Atik</div>
+        {/* Main Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
 
+          {/* LEFT: Image */}
+          <div className="w-full">
             <img
-              className='rounded-full'
-              height='30'
-              width='30'
-              alt='Avatar'
-              referrerPolicy='no-referrer'
-              src='https://lh3.googleusercontent.com/a/ACg8ocKUMU3XIX-JSUB80Gj_bYIWfYudpibgdwZE1xqmAGxHASgdvCZZ=s96-c'
+              src={image}
+              alt="Interior Design"
+              className="rounded-xl w-full object-cover"
             />
           </div>
-          <hr className='my-6' />
-          <div>
-            <p
-              className='
-                gap-4 
-                font-light
-                text-neutral-500
-              '
-            >
-              Quantity: 10 Units Left Only!
-            </p>
-          </div>
-          <hr className='my-6' />
-          <div className='flex justify-between'>
-            <p className='font-bold text-3xl text-gray-500'>Price: 10$</p>
+
+          {/* RIGHT: Text Content */}
+          <div className="space-y-4">
+
+            {/* Title Section */}
             <div>
-              <Button onClick={() => setIsOpen(true)} label='Purchase' />
+              <h1 className="text-xl lg:text-3xl font-bold text-gray-900">
+                Luxury Home Interior Design
+              </h1>
+
+              <div className="flex items-center gap-2 mt-2 text-yellow-600">
+                <Star size={20} fill="#DDA23C" stroke="none" />
+                <p className="text-gray-700 font-medium">
+                  4.9 <span className="text-gray-500 text-xm">(128 reviews)</span>
+                </p>
+              </div>
+
+              <p className="text-gray-400 mt-3 text-xm leading-relaxed">
+                Transform your living space with our premium home decoration service.
+                Our expert decorators will create a stunning, personalized environment
+                that reflects your unique style.
+              </p>
             </div>
-          </div>
-          <hr className='my-6' />
+
+            {/* Price Box */}
+            <div className="bg-yellow-50 rounded-lg p-6 border border-yellow-200">
+              <p className="text-2xl font-bold text-yellow-700">
+                ৳15,000 <span className="text-base font-medium text-gray-600">/ per room</span>
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                *Final price may vary based on specific requirements
+              </p>
+            </div>
+
+            {/* Included Items */}
+            <div>
+              <h2 className="text-xl font-semibold mb-3 text-gray-900">What's Included</h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700">
+
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-600">✓</span>
+                  Custom furniture selection
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-600">✓</span>
+                  Color consultation
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-600">✓</span>
+                  Lighting design
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-600">✓</span>
+                  Art curation
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-600">✓</span>
+                  Final styling
+                </div>
+              </div>
+            </div>
+
+            {/* Footer Details */}
+            <div className="border-t pt-4 text-gray-500 text-sm flex flex-wrap gap-4">
+              <p>🕒 Consultation: 1–2 hours</p>
+              <p>👷‍♂️ 1 decorators available</p>
+              <p>🌍 City-wide service</p>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <button onClick={() => setIsOpen(true)} label='Purchase' className="bg-yellow-600 hover:bg-yellow-700 text-white py-3 rounded-lg w-full sm:w-1/2 font-semibold transition">
+                Book Now
+              </button>
+              <hr className='my-6' />
 
           <PurchaseModal closeModal={closeModal} isOpen={isOpen} />
+
+              
+          
+
+              <button className="border border-gray-300 hover:bg-gray-100 py-3 rounded-lg w-full sm:w-1/2 font-semibold transition">
+                Contact Us
+              </button>
+            </div>
+
+          </div>
         </div>
       </div>
+    </section>
     </Container>
   )
 }
+
+// closeModal={closeModal} isOpen={isOpen} 
 
 export default PlantDetails
