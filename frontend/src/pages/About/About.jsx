@@ -4,10 +4,7 @@ import Reveal from '../../components/Animation/Reveal';
 import RevealLeftToRight from '../../components/Animation/RevealLeftToRight';
 
 const About = () => {
-  // Data for the statistics section
-  const image1 ='https://i.ibb.co.com/HLV0hnDV/photo-1741969494307-55394e3e4071-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg'
-  const image2 ='https://i.ibb.co.com/Swpn9MNc/premium-photo-1691861595088-b2c02e156557-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg'
-  const image3 ='https://i.ibb.co.com/bjy88nw9/premium-photo-1698249759490-f339e7c861e1-q-80-w-2070-auto-format-fit-crop-ixlib-rb-4-1.jpg'
+  
   const stats = [
     { label: 'Years of Excellence', value: '8+', icon: '🏆' },
     { label: 'Happy Clients', value: '2,500+', icon: '🤝' },
