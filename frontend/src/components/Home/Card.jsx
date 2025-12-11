@@ -6,7 +6,7 @@ import Reveal from "../Animation/Reveal";
 const Card = () => {
   return (
     <Reveal>
-      <div class=" transition delay-150 rounded-xl duration-500 ease-in-out hover:scale-110 hover:rounded-2xl ">
+      <div className=" transition delay-150 rounded-xl duration-500 ease-in-out hover:scale-110 hover:rounded-2xl ">
         <Link
           to={`/plant/1`}
           className="max-w-sm w-full rounded-2xl overflow-hidden "

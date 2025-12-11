@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Plants from '../../components/Home/Plants'
 import Hero from './Hero'
 import Reveal from '../../components/Animation/Reveal';
@@ -7,9 +6,9 @@ import { ArrowBigRight, Clock } from 'lucide-react';
 import { Link } from 'react-router';
 
 const Home = () => {
-  const [services, setServices] = useState([]);
+  // const [services, setServices] = useState([]);
 
-  const featuredServices = services.slice(0, 3);
+  // const featuredServices = services.slice(0, 3);
   return (
     <div>
       <Hero></Hero>

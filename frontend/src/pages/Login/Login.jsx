@@ -10,6 +10,8 @@ import { useState } from "react";
 import { Mail, Lock, Loader2, Eye, EyeOff } from "lucide-react";
 import LottieAnim from "../../components/Animation/LottieAnim";
 import Reveal from "../../components/Animation/Reveal";
+import { useForm } from "react-hook-form";
+import { saveOrUpdateUser } from "../../utils";
 
 const Login = () => {
   const { signIn, signInWithGoogle, loading, user, setLoading } = useAuth();
@@ -23,16 +25,30 @@ const Login = () => {
   if (loading) return <LoadingSpinner />;
   if (user) return <Navigate to={from} replace={true} />;
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  console.log(errors);
+
+  if (loading) return <LoadingSpinner />;
+  if (user) return <Navigate to={from} replace={true} />;
+
   // form submit handler
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const email = form.email.value;
-    const password = form.password.value;
+  const onSubmit = async (data) => {
+    const { email, password } = data;
 
     try {
       //User Login
-      await signIn(email, password);
+      await signIn(email, password)
+      //User Login 
+      const { user } = await signIn(email, password)
+      await saveOrUpdateUser({
+        name: user?.displayName,
+        email: user?.email,
+        image: user?.photoURL,
+      })
 
       navigate(from, { replace: true });
       toast.success("Login Successful");
@@ -42,11 +58,21 @@ const Login = () => {
     }
   };
 
+  // form submit handler
+
+
   // Handle Google Signin
   const handleGoogleSignIn = async () => {
     try {
+
       //User Registration using google
-      await signInWithGoogle();
+      const { user } = await signInWithGoogle()
+
+      await saveOrUpdateUser({
+        name: user?.displayName,
+        email: user?.email,
+        image: user?.photoURL,
+      })
       navigate(from, { replace: true });
       toast.success("Login Successful");
     } catch (err) {
@@ -84,7 +110,7 @@ const Login = () => {
           </div>
 
           <form
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             noValidate=""
             action=""
             className="space-y-6 ng-untouched ng-pristine ng-valid"
@@ -101,8 +127,19 @@ const Login = () => {
                   required
                   placeholder="Enter Your Email Here"
                   className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Za-z][A-Za-z0-9]*@[A-Za-z]+\.[A-Za-z]{2,}$/,
+
+                      message: "Invalid email address",
+                    },
+                  })}
                   data-temp-mail-org="0"
                 />
+                {errors.email && (
+                  <p className="text-red-500 mt-1">{errors.email.message}</p>
+                )}
               </div>
               <div>
                 <div className=" flex justify-between">
@@ -119,6 +156,15 @@ const Login = () => {
                     required
                     placeholder="••••••••"
                     className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
+                    {...register("password", {
+                      required: "Password is required",
+                      pattern: {
+                        value:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+                        message:
+                          "Password must be 6+ chars, include uppercase, lowercase, number & special char",
+                      },
+                    })}
                   />
                   <button
                     type="button"
@@ -131,6 +177,9 @@ const Login = () => {
                       <Eye className="h-5 w-5" />
                     )}
                   </button>
+                  {errors.password && (
+                    <p className="text-red-500 mt-1">{errors.password.message}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -175,11 +224,11 @@ const Login = () => {
             <Link
               state={from}
               to="/signup"
-              className="hover:underline hover:text-lime-500 text-gray-600"
+              className="hover:underline hover:text-primary text-gray-600"
             >
               Sign up
             </Link>
-            
+
           </p>
         </div>
       </Reveal>

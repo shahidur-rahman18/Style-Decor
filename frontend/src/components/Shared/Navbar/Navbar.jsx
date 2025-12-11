@@ -17,6 +17,7 @@ const navLinks = [
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
+  console.log(user)
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   
