@@ -6,7 +6,7 @@ const AddPlantForm = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const {
+   const {
     isPending,
     isError,
     mutateAsync,
@@ -34,6 +34,7 @@ const AddPlantForm = () => {
     // fetch try times
     retry: 3,
   });
+
 
   return (
     <div className="w-full min-h-[calc(100vh-40px)] flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
