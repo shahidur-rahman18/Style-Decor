@@ -21,10 +21,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const from = location.state || "/";
-
-  if (loading) return <LoadingSpinner />;
-  if (user) return <Navigate to={from} replace={true} />;
-
   const {
     register,
     handleSubmit,
@@ -32,23 +28,19 @@ const Login = () => {
   } = useForm();
   console.log(errors);
 
-  if (loading) return <LoadingSpinner />;
-  if (user) return <Navigate to={from} replace={true} />;
-
-  // form submit handler
   const onSubmit = async (data) => {
     const { email, password } = data;
 
     try {
       //User Login
-      await signIn(email, password)
-      //User Login 
-      const { user } = await signIn(email, password)
+      await signIn(email, password);
+      //User Login
+      const { user } = await signIn(email, password);
       await saveOrUpdateUser({
         name: user?.displayName,
         email: user?.email,
         image: user?.photoURL,
-      })
+      });
 
       navigate(from, { replace: true });
       toast.success("Login Successful");
@@ -58,21 +50,17 @@ const Login = () => {
     }
   };
 
-  // form submit handler
-
-
   // Handle Google Signin
   const handleGoogleSignIn = async () => {
     try {
-
       //User Registration using google
-      const { user } = await signInWithGoogle()
+      const { user } = await signInWithGoogle();
 
       await saveOrUpdateUser({
         name: user?.displayName,
         email: user?.email,
         image: user?.photoURL,
-      })
+      });
       navigate(from, { replace: true });
       toast.success("Login Successful");
     } catch (err) {
@@ -81,6 +69,10 @@ const Login = () => {
       toast.error(err?.message);
     }
   };
+
+  if (loading) return <LoadingSpinner />;
+  if (user) return <Navigate to={from} replace={true} />;
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">
       {/* left div  */}
@@ -124,7 +116,6 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
-                  required
                   placeholder="Enter Your Email Here"
                   className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
                   {...register("email", {
@@ -153,7 +144,6 @@ const Login = () => {
                     name="password"
                     autoComplete="current-password"
                     id="password"
-                    required
                     placeholder="••••••••"
                     className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
                     {...register("password", {
@@ -178,7 +168,9 @@ const Login = () => {
                     )}
                   </button>
                   {errors.password && (
-                    <p className="text-red-500 mt-1">{errors.password.message}</p>
+                    <p className="text-red-500 mt-1">
+                      {errors.password.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -228,7 +220,6 @@ const Login = () => {
             >
               Sign up
             </Link>
-
           </p>
         </div>
       </Reveal>

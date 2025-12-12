@@ -38,11 +38,6 @@ const SignUp = () => {
 
       const imageURL = await imageUpload(imageFile);
 
-      // this is used for cloudinaryImageUpload
-      /*   const cloudinaryImageUrl = await imageUploadCloudinary(imageFile)
-        console.log('this is cloudinary ',cloudinaryImageUrl) */
-
-
       //2. User Registration
       const result = await createUser(email, password);
       await saveOrUpdateUser({ name, email, image: imageURL })
@@ -170,7 +165,6 @@ const SignUp = () => {
                   type="email"
                   name="email"
                   id="email"
-                  required
                   placeholder="Enter Your Email Here"
                   className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
                   {...register("email", {
@@ -199,8 +193,7 @@ const SignUp = () => {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     autoComplete="current-password"
-                    id="password"
-                    required
+                    id="password"        
                     placeholder="••••••••"
                     className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-primary bg-gray-200 text-gray-900"
                     {...register("password", {

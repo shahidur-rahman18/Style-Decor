@@ -4,16 +4,35 @@ import Button from "../../components/Shared/Button/Button";
 import PurchaseModal from "../../components/Modal/PurchaseModal";
 import { useState } from "react";
 import { Star } from "lucide-react";
-import image from "../../assets/hero-decoration.jpg";
 import RevealLeftToRight from "../../components/Animation/RevealLeftToRight";
 import RevealRightToLeft from "../../components/Animation/RevealRightToLeft";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import { useParams } from "react-router";
 
 const ServiceDetails = () => {
   let [isOpen, setIsOpen] = useState(false);
+ const {id} = useParams();
+ console.log('service id', id)
+
+  const { data: service = {}, isLoading } = useQuery({
+    queryKey: ["service", id],
+    queryFn: async () => {
+      const result = await axios(`${import.meta.env.VITE_API_URL}/services/${id}`
+      );
+      return result.data;
+    },
+  });
 
   const closeModal = () => {
     setIsOpen(false);
   };
+
+  if (isLoading) return <LoadingSpinner />;
+  const { image, name, description, price } = service;
+  console.log(service)
 
   return (
     <Container>
@@ -38,7 +57,7 @@ const ServiceDetails = () => {
                 {/* Title Section */}
                 <div>
                   <h1 className="text-xl lg:text-4xl font-bold text-gray-900">
-                    Luxury Home Interior Design
+                    {name}
                   </h1>
 
                   <div className="flex items-center gap-2 mt-2 text-yellow-600">
@@ -52,16 +71,14 @@ const ServiceDetails = () => {
                   </div>
 
                   <p className="text-gray-400 mt-3 text-xm leading-relaxed">
-                    Transform your living space with our premium home decoration
-                    service. Our expert decorators will create a stunning,
-                    personalized environment that reflects your unique style.
+                   {description}
                   </p>
                 </div>
 
                 {/* Price Box */}
                 <div className="bg-yellow-50 rounded-lg p-6 border border-yellow-200">
                   <p className="text-2xl font-bold text-yellow-700">
-                    ৳15,000{" "}
+                    ৳ {price}
                     <span className="text-base font-medium text-gray-600">
                       / per room
                     </span>

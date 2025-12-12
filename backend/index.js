@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const admin = require("firebase-admin");
 const port = process.env.PORT || 3000;
 const decoded = Buffer.from(process.env.FB_SERVICE_KEY, "base64").toString(
@@ -58,7 +58,7 @@ async function run() {
     const usersCollection = db.collection("users");
 
     ("sellerRequests");
-    // Save a plant data in db
+    // Save a services data in db
     app.post("/services", async (req, res) => {
       const serviceData = req.body;
       console.log(serviceData);
@@ -66,6 +66,17 @@ async function run() {
       res.send(result);
     });
 
+    // get all services from db
+    app.get("/services", async (req, res) => {
+      const result = await servicesCollection.find().toArray();
+      res.send(result);
+    });
+    // get all  services from db
+    app.get("/services/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await servicesCollection.findOne({_id: new ObjectId(id)});
+      res.send(result);
+    });
 
     // save or update user in db
 
@@ -98,33 +109,11 @@ async function run() {
       res.send(result);
     });
 
-
-
-
-
-
-
     // get all plants from db
     app.get("/services", async (req, res) => {
       const result = await servicesCollection.find().toArray();
       res.send(result);
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
