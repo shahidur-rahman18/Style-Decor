@@ -53,7 +53,7 @@ const ServiceDetails = () => {
 
             {/* RIGHT: Text Content */}
             <RevealRightToLeft>
-              <div className="space-y-4 h-[80vh] ">
+              <div className="space-y-4 ">
                 {/* Title Section */}
                 <div>
                   <h1 className="text-xl lg:text-4xl font-bold text-gray-900">
@@ -77,7 +77,7 @@ const ServiceDetails = () => {
 
                 {/* Price Box */}
                 <div className="bg-yellow-50 rounded-lg p-6 border border-yellow-200">
-                  <p className="text-2xl font-bold text-yellow-700">
+                  <p className="text-xl font-bold text-yellow-700">
                     ৳ {price}
                     <span className="text-base font-medium text-gray-600">
                       / per room
@@ -140,7 +140,11 @@ const ServiceDetails = () => {
                   </button>
                   <hr className="my-6" />
 
-                  <PurchaseModal closeModal={closeModal} isOpen={isOpen} />
+                  <PurchaseModal 
+                   service={service}
+                  closeModal={closeModal} 
+                  isOpen={isOpen} 
+                  />
 
                   <button className="border cursor-pointer border-gray-300 hover:bg-gray-100 py-3 rounded-lg w-full sm:w-1/2 font-semibold transition">
                     Contact Us

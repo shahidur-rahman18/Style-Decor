@@ -18,6 +18,8 @@ import About from "../pages/About/About";
 import Services from "../pages/Service/Services";
 import Coverage from "../pages/Coverage/Coverage";
 import Contact from "../pages/Contact/Contact";
+import Analytics from "../components/Dashboard/Statistics/Analytics";
+import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +54,10 @@ export const router = createBrowserRouter([
         path: "/service/:id",
         element: <ServiceDetails />,
       },
+       {
+        path: '/payment-success',
+        element: <PaymentSuccess />,
+      },
     ],
   },
   { path: "/login", element: <Login /> },
@@ -69,6 +75,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Statistics />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "analytics",
+        element: (
+          <PrivateRoute>
+            <Analytics></Analytics>
           </PrivateRoute>
         ),
       },

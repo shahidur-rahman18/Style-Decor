@@ -16,6 +16,7 @@ import AdminMenu from './Menu/AdminMenu'
 import SellerMenu from './Menu/SellerMenu'
 import CustomerMenu from './Menu/CustomerMenu'
 import Analytics from '../Statistics/Analytics';
+import CommonMenu from './Menu/CommonMenu';
 
 const Sidebar = () => {
   const { logOut } = useAuth()
@@ -81,12 +82,15 @@ const Sidebar = () => {
             {/*  Menu Items */}
             <nav>
               {/* Common Menu */}
+              <CommonMenu></CommonMenu>
               <MenuItem
                 icon={BsGraphUp}
                 label='Statistics'
                 address='/dashboard'
               />
+              
               {/* Role-Based Menu */}
+              
               <CustomerMenu />
               <SellerMenu />
               <AdminMenu />
