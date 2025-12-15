@@ -210,8 +210,7 @@ async function run() {
     );
 
     // get all plants for a seller by email
-    app.get(
-      "/my-inventory/:email",
+    app.get("/my-inventory/:email",
       /*  verifyJWT,
       verifySELLER, */
       async (req, res) => {
