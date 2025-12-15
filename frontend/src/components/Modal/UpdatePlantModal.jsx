@@ -27,7 +27,7 @@ const UpdatePlantModal = ({ setIsEditModalOpen, isOpen }) => {
               as='h3'
               className='text-lg font-medium text-center leading-6 text-gray-900'
             >
-              Update Plant Info
+              Update Service Info
             </DialogTitle>
             <div className='mt-2 w-full'>
               <UpdatePlantForm />

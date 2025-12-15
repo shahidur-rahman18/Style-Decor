@@ -13,9 +13,9 @@ const SellerRequests = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ['seller-requests', user?.email],
+    queryKey: ['decorator-requests', user?.email],
     queryFn: async () => {
-      const result = await axiosSecure(`/seller-requests`)
+      const result = await axiosSecure(`/decorator-requests`)
       return result.data
     },
   })

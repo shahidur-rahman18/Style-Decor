@@ -18,9 +18,8 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "http://localhost:5173",
-      "http://localhost:5174",
-      "https://b12-m11-session.web.app",
+      process.env.CLIENT_DOMAIN,
+      "https://style-decor-client-self.vercel.app",
     ],
     credentials: true,
     optionSuccessStatus: 200,
@@ -58,11 +57,33 @@ async function run() {
     const servicesCollection = db.collection("services");
     const ordersCollection = db.collection("orders");
     const usersCollection = db.collection("users");
-    // const decoratorRequestsCollection = db.collection('decoratorRequests')
+    const decoratorRequestsCollection = db.collection("decoratorRequests");
 
-      ("sellerRequests");
+    // role middlewares
+    const verifyADMIN = async (req, res, next) => {
+      const email = req.tokenEmail;
+      const user = await usersCollection.findOne({ email });
+      if (user?.role !== "admin")
+        return res
+          .status(403)
+          .send({ message: "Admin only Actions!", role: user?.role });
+
+      next();
+    };
+
+    const verifySELLER = async (req, res, next) => {
+      const email = req.tokenEmail;
+      const user = await usersCollection.findOne({ email });
+      if (user?.role !== "seller")
+        return res
+          .status(403)
+          .send({ message: "Seller only Actions!", role: user?.role });
+
+      next();
+    };
+
     // Save a services data in db
-    app.post("/services", async (req, res) => {
+    app.post("/services", verifyJWT, verifySELLER, async (req, res) => {
       const serviceData = req.body;
       console.log(serviceData);
       const result = await servicesCollection.insertOne(serviceData);
@@ -80,16 +101,6 @@ async function run() {
       const result = await servicesCollection.findOne({
         _id: new ObjectId(id),
       });
-      res.send(result);
-    });
-
-    
-
-    
-
-    // get all services from db
-    app.get("/services", async (req, res) => {
-      const result = await servicesCollection.find().toArray();
       res.send(result);
     });
 
@@ -187,99 +198,118 @@ async function run() {
     });
 
     // get all orders for a customer by email
-    app.get("/my-orders",verifyJWT, async (req, res) => {
+    app.get("/my-orders", verifyJWT, async (req, res) => {
       const result = await ordersCollection
-        .find( { customer: req.tokenEmail } )
+        .find({ customer: req.tokenEmail })
         .toArray();
       res.send(result);
     });
 
-    // get all orders for a seller by email
+    // get all orders for a seller by email from order collection
     app.get(
       "/manage-orders/:email",
-      /* verifyJWT,
-      verifySELLER, */
+      verifyJWT,
+      verifySELLER,
       async (req, res) => {
         const email = req.params.email;
 
         const result = await ordersCollection
-          .find(/* { 'seller.email': email } */)
+          .find({ "seller.email": email })
           .toArray();
         res.send(result);
       }
     );
 
-    // get all plants for a seller by email
-    app.get("/my-inventory/:email",
-      /*  verifyJWT,
-      verifySELLER, */
+    // get all plants for a seller by email from serviceCollection
+    app.get(
+      "/my-inventory/:email",
+      verifyJWT,
+      verifySELLER,
       async (req, res) => {
         const email = req.params.email;
 
         const result = await servicesCollection
-          .find(/* { "seller.email": email } */)
+          .find({ "seller.email": email })
           .toArray();
         res.send(result);
       }
     );
 
     // save or update a user in db
-    app.post('/user', async (req, res) => {
-      const userData = req.body
-      userData.created_at = new Date().toISOString()
-      userData.last_loggedIn = new Date().toISOString()
-      userData.role = 'customer'
+    app.post("/user", async (req, res) => {
+      const userData = req.body;
+      userData.created_at = new Date().toISOString();
+      userData.last_loggedIn = new Date().toISOString();
+      userData.role = "customer";
 
       const query = {
         email: userData.email,
-      }
+      };
 
-      const alreadyExists = await usersCollection.findOne(query)
-      console.log('User Already Exists---> ', !!alreadyExists)
+      const alreadyExists = await usersCollection.findOne(query);
+      console.log("User Already Exists---> ", !!alreadyExists);
 
       if (alreadyExists) {
-        console.log('Updating user info......')
+        console.log("Updating user info......");
         const result = await usersCollection.updateOne(query, {
           $set: {
             last_loggedIn: new Date().toISOString(),
           },
-        })
-        return res.send(result)
+        });
+        return res.send(result);
       }
 
-      console.log('Saving new user info......')
-      const result = await usersCollection.insertOne(userData)
-      res.send(result)
-    })
+      console.log("Saving new user info......");
+      const result = await usersCollection.insertOne(userData);
+      res.send(result);
+    });
     // get a user's role
     app.get("/user/role", verifyJWT, async (req, res) => {
       const result = await usersCollection.findOne({ email: req.tokenEmail });
       res.send({ role: result?.role });
     });
 
+    // save become-seller request
+    app.post("/become-decorator", verifyJWT, async (req, res) => {
+      const email = req.tokenEmail;
+      const alreadyExists = await decoratorRequestsCollection.findOne({
+        email,
+      });
+      if (alreadyExists)
+        return res
+          .status(409)
+          .send({ message: "Already requested, wait koro." });
+
+      const result = await decoratorRequestsCollection.insertOne({ email });
+      res.send(result);
+    });
+
+    // get all seller requests for admin
+    app.get("/decorator-requests", verifyJWT, verifyADMIN, async (req, res) => {
+      const result = await decoratorRequestsCollection.find().toArray();
+      res.send(result);
+    });
+
     // get all users for admin
-    app.get("/users", /* verifyJWT, verifyADMIN,  */async (req, res) => {
-      // const adminEmail = req.tokenEmail;
+    app.get("/users", verifyJWT, verifyADMIN, async (req, res) => {
+      const adminEmail = req.tokenEmail;
       const result = await usersCollection
-        .find(/* { email: { $ne: adminEmail } } */)
+        .find({ email: { $ne: adminEmail } })
         .toArray();
       res.send(result);
     });
 
     // update a user's role
-    app.patch("/update-role",/*  verifyJWT, verifyADMIN, */ async (req, res) => {
+    app.patch("/update-role", verifyJWT, verifyADMIN, async (req, res) => {
       const { email, role } = req.body;
       const result = await usersCollection.updateOne(
         { email },
         { $set: { role } }
       );
-      // await sellerRequestsCollection.deleteOne({ email });
+      await decoratorRequestsCollection.deleteOne({ email });
 
       res.send(result);
     });
-
-
-
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

@@ -22,6 +22,7 @@ import Analytics from "../components/Dashboard/Statistics/Analytics";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
 import SellerRoute from "./SellerRoute";
 import AdminRoute from "./AdminRoute";
+import SellerRequests from "../pages/Dashboard/Admin/SellerRequests";
 
 export const router = createBrowserRouter([
   {
@@ -89,7 +90,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "add-plant",
+        path: "add-service",
         element: (
           <PrivateRoute>
             <SellerRoute>
@@ -119,8 +120,8 @@ export const router = createBrowserRouter([
         ),
       },
 
-      /*  {
-        path: 'seller-requests',
+       {
+        path:'seller-requests',
         element: (
           <PrivateRoute>
             <AdminRoute>
@@ -128,7 +129,7 @@ export const router = createBrowserRouter([
             </AdminRoute>
           </PrivateRoute>
         ),
-      }, */
+      },
       {
         path: "profile",
         element: (

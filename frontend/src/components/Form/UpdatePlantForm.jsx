@@ -10,11 +10,11 @@ const UpdatePlantForm = () => {
                 Name
               </label>
               <input
-                className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
+                className='w-full px-4 py-3 text-gray-800 border border-amber-500 focus:outline-amber-600 rounded-md bg-white'
                 name='name'
                 id='name'
                 type='text'
-                placeholder='Plant Name'
+                placeholder='Service Name'
                 required
               />
             </div>
@@ -25,13 +25,15 @@ const UpdatePlantForm = () => {
               </label>
               <select
                 required
-                className='w-full px-4 py-3 border-lime-300 focus:outline-lime-500 rounded-md bg-white'
+                className='w-full px-4 py-3 border-amber-500  focus:outline-amber-600 rounded-md bg-white'
                 name='category'
               >
-                <option value='Indoor'>Indoor</option>
-                <option value='Outdoor'>Outdoor</option>
-                <option value='Succulent'>Succulent</option>
-                <option value='Flowering'>Flowering</option>
+                <option value='Indoor'>Wedding</option>
+                <option value='Outdoor'>Home</option>
+                <option value='Succulent'>Office</option>
+                <option value='Flowering'>Seminar</option>
+                <option value='Flowering'>Birthday</option>
+                <option value='Flowering'>Anniversary</option>
               </select>
             </div>
             {/* Description */}
@@ -42,8 +44,8 @@ const UpdatePlantForm = () => {
 
               <textarea
                 id='description'
-                placeholder='Write plant description here...'
-                className='block rounded-md focus:lime-300 w-full h-32 px-4 py-3 text-gray-800  border border-lime-300 bg-white focus:outline-lime-500 '
+                placeholder='Write service description here...'
+                className='block rounded-md focus:lime-300 w-full h-32 px-4 py-3 text-gray-800  border border-amber-500 bg-white focus:outline-amber-600 '
                 name='description'
               ></textarea>
             </div>
@@ -57,11 +59,11 @@ const UpdatePlantForm = () => {
                   Price
                 </label>
                 <input
-                  className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
+                  className='w-full px-4 py-3 text-gray-800 border border-amber-500 focus:outline-amber-600 rounded-md bg-white'
                   name='price'
                   id='price'
                   type='number'
-                  placeholder='Price per unit'
+                  placeholder='Price per service'
                   required
                 />
               </div>
@@ -72,7 +74,7 @@ const UpdatePlantForm = () => {
                   Quantity
                 </label>
                 <input
-                  className='w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white'
+                  className='w-full px-4 py-3 text-gray-800 border border-amber-500 focus:outline-amber-600 rounded-md bg-white'
                   name='quantity'
                   id='quantity'
                   type='number'
@@ -94,7 +96,7 @@ const UpdatePlantForm = () => {
                       accept='image/*'
                       hidden
                     />
-                    <div className='bg-lime-500 text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-lime-500'>
+                    <div className='bg-primary text-white border border-gray-300 rounded font-semibold cursor-pointer p-1 px-3 hover:bg-amber-500'>
                       Upload Image
                     </div>
                   </label>
@@ -105,9 +107,9 @@ const UpdatePlantForm = () => {
             {/* Submit Button */}
             <button
               type='submit'
-              className='w-full cursor-pointer p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-lime-500 '
+              className='w-full cursor-pointer p-3 mt-5 text-center font-medium text-white transition duration-200 rounded shadow-md bg-primary'
             >
-              Update Plant
+              Update Service
             </button>
           </div>
         </div>

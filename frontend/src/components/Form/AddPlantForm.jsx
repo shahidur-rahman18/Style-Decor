@@ -138,7 +138,7 @@ const AddPlantForm = () => {
 
               <textarea
                 id="description"
-                placeholder="Write plant description here..."
+                placeholder="Write service description here..."
                 className="block rounded-md focus:lime-300 w-full h-32 px-4 py-3 text-gray-800  border border-primary bg-white focus:outline-primary "
                 name="description"
                 {...register("description", {
