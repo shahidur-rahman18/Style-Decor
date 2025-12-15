@@ -187,9 +187,9 @@ async function run() {
     });
 
     // get all orders for a customer by email
-    app.get("/my-orders", async (req, res) => {
+    app.get("/my-orders",verifyJWT, async (req, res) => {
       const result = await ordersCollection
-        .find(/* { customer: req.tokenEmail } */)
+        .find( { customer: req.tokenEmail } )
         .toArray();
       res.send(result);
     });

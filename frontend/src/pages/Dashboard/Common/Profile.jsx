@@ -1,8 +1,12 @@
 import useAuth from '../../../hooks/useAuth'
 import coverImg from '../../../assets/images/cover.jpg'
+import useRole from '../../../hooks/useRole'
+import LoadingSpinner from '../../../components/Shared/LoadingSpinner'
 
 const Profile = () => {
   const { user } = useAuth()
+    const [role, isRoleLoading] = useRole()
+    if(isRoleLoading) return <LoadingSpinner />
 
   return (
     <div className='flex justify-center items-center h-screen'>
@@ -21,8 +25,8 @@ const Profile = () => {
             />
           </a>
 
-          <p className='p-2 px-4 text-xs text-white bg-lime-500 rounded-full'>
-            Customer
+          <p className='p-2 px-4 text-xs text-white bg-primary rounded-full'>
+           {role}
           </p>
           <p className='mt-2 text-xl font-medium text-gray-800 '>
             User Id: {user?.uid}
@@ -41,10 +45,10 @@ const Profile = () => {
               </p>
 
               <div>
-                <button className='bg-lime-500  px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-lime-800 block mb-1'>
+                <button className='bg-primary  px-10 py-1 rounded-lg text-white cursor-pointer hover:bg-amber-400 block mb-1'>
                   Update Profile
                 </button>
-                <button className='bg-lime-500 px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-lime-800'>
+                <button className='bg-amber-700 px-7 py-1 rounded-lg text-white cursor-pointer hover:bg-amber-600'>
                   Change Password
                 </button>
               </div>

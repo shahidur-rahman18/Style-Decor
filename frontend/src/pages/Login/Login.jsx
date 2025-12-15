@@ -70,7 +70,7 @@ const Login = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner />;
+  // if (loading) return <LoadingSpinner />;
   if (user) return <Navigate to={from} replace={true} />;
 
   return (
