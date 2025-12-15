@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { useEffect } from 'react';
+// useSearchParams and Link should come from react-router-dom
 import { Link, useSearchParams } from 'react-router'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import RevealArise from '../../components/Animation/RevealArise';
@@ -11,9 +12,11 @@ const PaymentSuccess = () => {
   const sessionId = searchParams.get('session_id')
   useEffect(() => {
     if (sessionId) {
-      axios.post(`${import.meta.env.VITE_API_URL}/payment-success`, {
-        sessionId,
-      })
+      // notify backend of successful session; log result for debugging
+      axios
+        .post(`${import.meta.env.VITE_API_URL}/payment-success`, { sessionId })
+        .then((res) => console.log('payment-success response', res.data))
+        .catch((err) => console.error('payment-success error', err.response || err))
     }
   }, [sessionId])
   return (

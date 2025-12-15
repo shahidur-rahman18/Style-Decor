@@ -56,9 +56,9 @@ async function run() {
   try {
     const db = client.db("styleDecorDB");
     const servicesCollection = db.collection("services");
-     const ordersCollection = db.collection('orders')
+    const ordersCollection = db.collection("orders");
     const usersCollection = db.collection("users");
-    
+
 
     ("sellerRequests");
     // Save a services data in db
@@ -77,7 +77,7 @@ async function run() {
     // get all  services from db
     app.get("/services/:id", async (req, res) => {
       const id = req.params.id;
-      const result = await servicesCollection.findOne({_id: new ObjectId(id)});
+      const result = await servicesCollection.findOne({ _id: new ObjectId(id) });
       res.send(result);
     });
 
@@ -112,15 +112,15 @@ async function run() {
       res.send(result);
     });
 
-    // get all plants from db
+    // get all services from db
     app.get("/services", async (req, res) => {
       const result = await servicesCollection.find().toArray();
       res.send(result);
     });
 
-    
 
-     // Payment endpoints
+
+    // Payment endpoints
     app.post('/create-checkout-session', async (req, res) => {
       const paymentInfo = req.body
       console.log(paymentInfo)
@@ -141,12 +141,13 @@ async function run() {
         ],
         customer_email: paymentInfo?.customer?.email,
         mode: 'payment',
+        // Accept either `serviceId` or legacy `plantId` (frontend used `plantId` before)
         metadata: {
-          plantId: paymentInfo?.plantId,
+          serviceId: paymentInfo?.serviceId,
           customer: paymentInfo?.customer.email,
         },
         success_url: `${process.env.CLIENT_DOMAIN}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.CLIENT_DOMAIN}/plant/${paymentInfo?.plantId}`,
+        cancel_url: `${process.env.CLIENT_DOMAIN}/service/${paymentInfo?.serviceId}`,
       })
       res.send({ url: session.url })
     })
@@ -155,32 +156,36 @@ async function run() {
     app.post('/payment-success', async (req, res) => {
       const { sessionId } = req.body
       const session = await stripe.checkout.sessions.retrieve(sessionId)
-      const plant = await servicesCollectionCollection.findOne({
-        _id: new ObjectId(session.metadata.plantId),
+      console.log('payment-success: retrieved session', session.id)
+      // find service using metadata.serviceId (introduced above in session creation)
+      const service = await servicesCollection.findOne({
+        _id: new ObjectId(session.metadata?.serviceId),
       })
-      const order = await ordersCollection.findOne({
-        transactionId: session.payment_intent,
-      })
+      const order = await ordersCollection.findOne({ transactionId: session.payment_intent })
 
-      if (session.status === 'complete' && plant && !order) {
+      // Stripe may report either `payment_status: 'paid'` or `status: 'complete'`
+      const paid = session.payment_status === 'paid' || session.status === 'complete'
+
+      if (paid && service && !order) {
         // save order data in db
         const orderInfo = {
-          plantId: session.metadata.plantId,
+          serviceId: session.metadata.serviceId,
           transactionId: session.payment_intent,
           customer: session.metadata.customer,
           status: 'pending',
-          seller: plant.seller,
-          name: plant.name,
-          category: plant.category,
+          seller: service.seller,
+          name: service.name,
+          category: service.category,
           quantity: 1,
           price: session.amount_total / 100,
-          image: plant?.image,
+          image: service?.image,
         }
         const result = await ordersCollection.insertOne(orderInfo)
-        // update plant quantity
-        await plantsCollection.updateOne(
+        console.log('payment-success: inserted order', result.insertedId)
+        // update service quantity
+        await servicesCollection.updateOne(
           {
-            _id: new ObjectId(session.metadata.plantId),
+            _id: new ObjectId(session.metadata.serviceId),
           },
           { $inc: { quantity: -1 } }
         )
@@ -190,15 +195,43 @@ async function run() {
           orderId: result.insertedId,
         })
       }
-      res.send(
-        res.send({
-          transactionId: session.payment_intent,
-          orderId: order._id,
-        })
-      )
+      // If an order already exists, return it; otherwise return a helpful message
+      if (order) {
+        return res.send({ transactionId: session.payment_intent, orderId: order._id })
+      }
+
+      console.log('payment-success: no order created for session', session.id)
+      return res.status(400).send({ message: 'No new order created. Payment not confirmed or service missing on session metadata.', session })
     })
 
 
+
+
+
+
+    // get all orders for a customer by email
+    app.get('/my-orders', async (req, res) => {
+      const result = await ordersCollection
+        .find(/* { customer: req.tokenEmail } */)
+        .toArray()
+      res.send(result)
+    })
+
+
+    // get all orders for a seller by email
+    app.get(
+      '/manage-orders/:email',
+      /* verifyJWT,
+      verifySELLER, */
+      async (req, res) => {
+        const email = req.params.email
+
+        const result = await ordersCollection
+          .find(/* { 'seller.email': email } */)
+          .toArray()
+        res.send(result)
+      }
+    )
 
 
 

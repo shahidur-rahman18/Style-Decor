@@ -5,10 +5,12 @@ import axios from 'axios'
 const PurchaseModal = ({ closeModal, isOpen, service }) => {
   // Total Price Calculation
   const { user } = useAuth()
-  const { _id, name, category, price, description, image, seller } = service || {}
+  const { _id, name, category, price, description, image, seller,
+    quantity } = service || {}
   const handlePayment = async () => {
-     const paymentInfo = {
-      plantId: _id,
+    const paymentInfo = {
+      // include `serviceId` to match backend's expected metadata key
+      serviceId: _id,
       name,
       category,
       price,
@@ -27,7 +29,7 @@ const PurchaseModal = ({ closeModal, isOpen, service }) => {
       paymentInfo
     )
 
-    console.log('pay',data)
+    console.log('pay', data)
     window.location.href = data.url
   }
 
@@ -58,14 +60,14 @@ const PurchaseModal = ({ closeModal, isOpen, service }) => {
               <p className='text-sm text-gray-500'>Category: {category} </p>
             </div>
             <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Customer: PH</p>
+              <p className='text-sm text-gray-500'>Customer: {user?.displayName}</p>
             </div>
 
             <div className='mt-2'>
               <p className='text-sm text-gray-500'>Price: $ {price}</p>
             </div>
             <div className='mt-2'>
-              <p className='text-sm text-gray-500'>Available Quantity: 5</p>
+              <p className='text-sm text-gray-500'>Available Quantity: {quantity} </p>
             </div>
             <div className='flex mt-2 justify-around'>
               <button
