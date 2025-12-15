@@ -1,6 +1,21 @@
 import PlantDataRow from '../../../components/Dashboard/TableRows/PlantDataRow'
-
+import { useQuery } from '@tanstack/react-query'
+import useAuth from '../../../hooks/useAuth'
+import LoadingSpinner from '../../../components/Shared/LoadingSpinner'
+import useAxiosSecure from '../../../hooks/useAxiosSecure'
 const MyInventory = () => {
+   const { user } = useAuth()
+  const axiosSecure = useAxiosSecure()
+  const { data: services = [], isLoading } = useQuery({
+    queryKey: ['inventory', user?.email],
+    queryFn: async () => {
+      const result = await axiosSecure(`/my-inventory/${user?.email}`)
+
+      return result.data
+    },
+  })
+
+  if (isLoading) return <LoadingSpinner />
   return (
     <>
       <div className='container mx-auto px-4 sm:px-8'>
@@ -56,7 +71,9 @@ const MyInventory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <PlantDataRow />
+                  {services.map(service => (
+                    <PlantDataRow key={service._id} service={service} />
+                  ))}
                 </tbody>
               </table>
             </div>

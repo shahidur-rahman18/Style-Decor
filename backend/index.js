@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const admin = require("firebase-admin");
 const port = process.env.PORT || 3000;
 const decoded = Buffer.from(process.env.FB_SERVICE_KEY, "base64").toString(
@@ -59,7 +59,6 @@ async function run() {
     const ordersCollection = db.collection("orders");
     const usersCollection = db.collection("users");
 
-
     ("sellerRequests");
     // Save a services data in db
     app.post("/services", async (req, res) => {
@@ -77,7 +76,9 @@ async function run() {
     // get all  services from db
     app.get("/services/:id", async (req, res) => {
       const id = req.params.id;
-      const result = await servicesCollection.findOne({ _id: new ObjectId(id) });
+      const result = await servicesCollection.findOne({
+        _id: new ObjectId(id),
+      });
       res.send(result);
     });
 
@@ -118,17 +119,15 @@ async function run() {
       res.send(result);
     });
 
-
-
     // Payment endpoints
-    app.post('/create-checkout-session', async (req, res) => {
-      const paymentInfo = req.body
-      console.log(paymentInfo)
+    app.post("/create-checkout-session", async (req, res) => {
+      const paymentInfo = req.body;
+      console.log(paymentInfo);
       const session = await stripe.checkout.sessions.create({
         line_items: [
           {
             price_data: {
-              currency: 'usd',
+              currency: "usd",
               product_data: {
                 name: paymentInfo?.name,
                 description: paymentInfo?.description,
@@ -140,7 +139,7 @@ async function run() {
           },
         ],
         customer_email: paymentInfo?.customer?.email,
-        mode: 'payment',
+        mode: "payment",
         // Accept either `serviceId` or legacy `plantId` (frontend used `plantId` before)
         metadata: {
           serviceId: paymentInfo?.serviceId,
@@ -148,23 +147,25 @@ async function run() {
         },
         success_url: `${process.env.CLIENT_DOMAIN}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.CLIENT_DOMAIN}/service/${paymentInfo?.serviceId}`,
-      })
-      res.send({ url: session.url })
-    })
+      });
+      res.send({ url: session.url });
+    });
 
-
-    app.post('/payment-success', async (req, res) => {
-      const { sessionId } = req.body
-      const session = await stripe.checkout.sessions.retrieve(sessionId)
-      console.log('payment-success: retrieved session', session.id)
+    app.post("/payment-success", async (req, res) => {
+      const { sessionId } = req.body;
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      console.log("payment-success: retrieved session", session.id);
       // find service using metadata.serviceId (introduced above in session creation)
       const service = await servicesCollection.findOne({
         _id: new ObjectId(session.metadata?.serviceId),
-      })
-      const order = await ordersCollection.findOne({ transactionId: session.payment_intent })
+      });
+      const order = await ordersCollection.findOne({
+        transactionId: session.payment_intent,
+      });
 
       // Stripe may report either `payment_status: 'paid'` or `status: 'complete'`
-      const paid = session.payment_status === 'paid' || session.status === 'complete'
+      const paid =
+        session.payment_status === "paid" || session.status === "complete";
 
       if (paid && service && !order) {
         // save order data in db
@@ -172,76 +173,141 @@ async function run() {
           serviceId: session.metadata.serviceId,
           transactionId: session.payment_intent,
           customer: session.metadata.customer,
-          status: 'pending',
+          status: "pending",
           seller: service.seller,
           name: service.name,
           category: service.category,
           quantity: 1,
           price: session.amount_total / 100,
           image: service?.image,
-        }
-        const result = await ordersCollection.insertOne(orderInfo)
-        console.log('payment-success: inserted order', result.insertedId)
+        };
+        const result = await ordersCollection.insertOne(orderInfo);
+        console.log("payment-success: inserted order", result.insertedId);
         // update service quantity
         await servicesCollection.updateOne(
           {
             _id: new ObjectId(session.metadata.serviceId),
           },
           { $inc: { quantity: -1 } }
-        )
+        );
 
         return res.send({
           transactionId: session.payment_intent,
           orderId: result.insertedId,
-        })
+        });
       }
       // If an order already exists, return it; otherwise return a helpful message
       if (order) {
-        return res.send({ transactionId: session.payment_intent, orderId: order._id })
+        return res.send({
+          transactionId: session.payment_intent,
+          orderId: order._id,
+        });
       }
 
-      console.log('payment-success: no order created for session', session.id)
-      return res.status(400).send({ message: 'No new order created. Payment not confirmed or service missing on session metadata.', session })
-    })
-
-
-
-
-
+      console.log("payment-success: no order created for session", session.id);
+      return res.status(400).send({
+        message:
+          "No new order created. Payment not confirmed or service missing on session metadata.",
+        session,
+      });
+    });
 
     // get all orders for a customer by email
-    app.get('/my-orders', async (req, res) => {
+    app.get("/my-orders", async (req, res) => {
       const result = await ordersCollection
         .find(/* { customer: req.tokenEmail } */)
-        .toArray()
-      res.send(result)
-    })
-
+        .toArray();
+      res.send(result);
+    });
 
     // get all orders for a seller by email
     app.get(
-      '/manage-orders/:email',
+      "/manage-orders/:email",
       /* verifyJWT,
       verifySELLER, */
       async (req, res) => {
-        const email = req.params.email
+        const email = req.params.email;
 
         const result = await ordersCollection
           .find(/* { 'seller.email': email } */)
-          .toArray()
-        res.send(result)
+          .toArray();
+        res.send(result);
       }
-    )
+    );
+
+    // get all plants for a seller by email
+    app.get(
+      "/my-inventory/:email",
+      /*  verifyJWT,
+      verifySELLER, */
+      async (req, res) => {
+        const email = req.params.email;
+
+        const result = await servicesCollection
+          .find(/* { "seller.email": email } */)
+          .toArray();
+        res.send(result);
+      }
+    );
+
+    // save or update a user in db
+    app.post("/user", async (req, res) => {
+      const userData = req.body;
+      userData.created_at = new Date().toISOString();
+      userData.last_loggedIn = new Date().toISOString();
+      userData.role = "customer";
+
+      const query = {
+        email: userData.email,
+      };
+
+      const alreadyExists = await usersCollection.findOne(query);
+      console.log("User Already Exists---> ", !!alreadyExists);
+
+      if (alreadyExists) {
+        console.log("Updating user info......");
+        const result = await usersCollection.updateOne(query, {
+          $set: {
+            last_loggedIn: new Date().toISOString(),
+          },
+        });
+        return res.send(result);
+      }
+
+      console.log("Saving new user info......");
+      const result = await usersCollection.insertOne(userData);
+      res.send(result);
+    });
+
+    // get a user's role
+    app.get("/user/role", verifyJWT, async (req, res) => {
+      const result = await usersCollection.findOne({ email: req.tokenEmail });
+      res.send({ role: result?.role });
+    });
+
+    // get all users for admin
+    app.get("/users", /* verifyJWT, verifyADMIN,  */async (req, res) => {
+      // const adminEmail = req.tokenEmail;
+      const result = await usersCollection
+        .find(/* { email: { $ne: adminEmail } } */)
+        .toArray();
+      res.send(result);
+    });
+
+    // update a user's role
+    app.patch("/update-role",/*  verifyJWT, verifyADMIN, */ async (req, res) => {
+      const { email, role } = req.body;
+      const result = await usersCollection.updateOne(
+        { email },
+        { $set: { role } }
+      );
+      // await sellerRequestsCollection.deleteOne({ email });
+
+      res.send(result);
+    });
 
 
-
-
-
-
-
-
-
-
+    
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
