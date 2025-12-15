@@ -4,6 +4,7 @@ import RevealRightToLeft from "../../components/Animation/RevealRightToLeft";
 import RevealLeftToRight from "../../components/Animation/RevealLeftToRight";
 
 import toast from "react-hot-toast";
+import Container from "../../components/Shared/Container";
 
 const Contact = () => {
   const handleSubmit = (e) => {
@@ -12,7 +13,8 @@ const Contact = () => {
     e.target.reset();
   };
   return (
-    <section className="bg-[#faf8f5] py-16 px-4">
+   <Container>
+     <section className=" py-16 px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <Reveal>
@@ -28,7 +30,7 @@ const Contact = () => {
         </Reveal>
 
         {/* Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <div className="bg-[#faf8f5] grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Left Info */}
           <RevealLeftToRight>
             <div>
@@ -103,7 +105,7 @@ const Contact = () => {
 
           {/* Right Form */}
           <RevealRightToLeft>
-            <div className="bg-white rounded-2xl shadow-sm p-8">
+            <div className="bg-white rounded-2xl shadow-2xl p-8">
               <h2 className="text-2xl font-serif font-semibold mb-6">
                 Send Us a Message
               </h2>
@@ -177,6 +179,7 @@ const Contact = () => {
         </div>
       </div>
     </section>
+   </Container>
   );
 };
 

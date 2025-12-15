@@ -58,8 +58,9 @@ async function run() {
     const servicesCollection = db.collection("services");
     const ordersCollection = db.collection("orders");
     const usersCollection = db.collection("users");
+    // const decoratorRequestsCollection = db.collection('decoratorRequests')
 
-    ("sellerRequests");
+      ("sellerRequests");
     // Save a services data in db
     app.post("/services", async (req, res) => {
       const serviceData = req.body;
@@ -82,36 +83,9 @@ async function run() {
       res.send(result);
     });
 
-    // save or update user in db
+    
 
-    app.post("/user", async (req, res) => {
-      const userData = req.body;
-      // console.log(userData)
-      userData.created_at = new Date().toISOString();
-      userData.last_loggedIn = new Date().toISOString();
-      userData.role = "customer";
-
-      const query = {
-        email: userData.email,
-      };
-      const alreadyExists = await usersCollection.findOne(query);
-      console.log("User Already Exists---> ", !!alreadyExists);
-
-      if (alreadyExists) {
-        console.log("Updating user info......");
-        const result = await usersCollection.updateOne(query, {
-          $set: {
-            last_loggedIn: new Date().toISOString(),
-          },
-        });
-        return res.send(result);
-      }
-
-      console.log("Saving new user info......");
-
-      const result = await usersCollection.insertOne(userData);
-      res.send(result);
-    });
+    
 
     // get all services from db
     app.get("/services", async (req, res) => {
@@ -251,34 +225,33 @@ async function run() {
     );
 
     // save or update a user in db
-    app.post("/user", async (req, res) => {
-      const userData = req.body;
-      userData.created_at = new Date().toISOString();
-      userData.last_loggedIn = new Date().toISOString();
-      userData.role = "customer";
+    app.post('/user', async (req, res) => {
+      const userData = req.body
+      userData.created_at = new Date().toISOString()
+      userData.last_loggedIn = new Date().toISOString()
+      userData.role = 'customer'
 
       const query = {
         email: userData.email,
-      };
+      }
 
-      const alreadyExists = await usersCollection.findOne(query);
-      console.log("User Already Exists---> ", !!alreadyExists);
+      const alreadyExists = await usersCollection.findOne(query)
+      console.log('User Already Exists---> ', !!alreadyExists)
 
       if (alreadyExists) {
-        console.log("Updating user info......");
+        console.log('Updating user info......')
         const result = await usersCollection.updateOne(query, {
           $set: {
             last_loggedIn: new Date().toISOString(),
           },
-        });
-        return res.send(result);
+        })
+        return res.send(result)
       }
 
-      console.log("Saving new user info......");
-      const result = await usersCollection.insertOne(userData);
-      res.send(result);
-    });
-
+      console.log('Saving new user info......')
+      const result = await usersCollection.insertOne(userData)
+      res.send(result)
+    })
     // get a user's role
     app.get("/user/role", verifyJWT, async (req, res) => {
       const result = await usersCollection.findOne({ email: req.tokenEmail });
@@ -307,7 +280,7 @@ async function run() {
     });
 
 
-    
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

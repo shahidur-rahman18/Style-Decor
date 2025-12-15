@@ -20,6 +20,8 @@ import Coverage from "../pages/Coverage/Coverage";
 import Contact from "../pages/Contact/Contact";
 import Analytics from "../components/Dashboard/Statistics/Analytics";
 import PaymentSuccess from "../pages/Payment/PaymentSuccess";
+import SellerRoute from "./SellerRoute";
+import AdminRoute from "./AdminRoute";
 
 export const router = createBrowserRouter([
   {
@@ -35,7 +37,7 @@ export const router = createBrowserRouter([
         path: "/services",
         element: <Services />,
       },
-    
+
       {
         path: "/about",
         element: <About />,
@@ -54,7 +56,7 @@ export const router = createBrowserRouter([
         path: "/service/:id",
         element: <ServiceDetails />,
       },
-       {
+      {
         path: '/payment-success',
         element: <PaymentSuccess />,
       },
@@ -90,7 +92,9 @@ export const router = createBrowserRouter([
         path: "add-plant",
         element: (
           <PrivateRoute>
-            <AddPlant />
+            <SellerRoute>
+              <AddPlant />
+            </SellerRoute>
           </PrivateRoute>
         ),
       },
@@ -98,7 +102,9 @@ export const router = createBrowserRouter([
         path: "my-inventory",
         element: (
           <PrivateRoute>
-            <MyInventory />
+            <SellerRoute>
+              <MyInventory />
+            </SellerRoute>
           </PrivateRoute>
         ),
       },
@@ -106,10 +112,23 @@ export const router = createBrowserRouter([
         path: "manage-users",
         element: (
           <PrivateRoute>
-            <ManageUsers />
+            <AdminRoute>
+              <ManageUsers />
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
+
+     /*  {
+        path: 'seller-requests',
+        element: (
+          <PrivateRoute>
+            <AdminRoute>
+              <SellerRequests />
+            </AdminRoute>
+          </PrivateRoute>
+        ),
+      }, */
       {
         path: "profile",
         element: (
@@ -128,7 +147,13 @@ export const router = createBrowserRouter([
       },
       {
         path: "manage-orders",
-        element: <ManageOrders />,
+        element:
+          <PrivateRoute>
+            <SellerRoute>
+              <ManageOrders />
+            </SellerRoute>
+          </PrivateRoute>
+        ,
       },
     ],
   },
