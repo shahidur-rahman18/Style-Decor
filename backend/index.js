@@ -133,7 +133,7 @@ async function run() {
         success_url: `${process.env.CLIENT_DOMAIN}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.CLIENT_DOMAIN}/service/${paymentInfo?.serviceId}`,
       });
-      res.send({ url: session.url });
+      res.send({ url: session.url })
     });
 
     app.post("/payment-success", async (req, res) => {

@@ -1,13 +1,23 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import useAuth from '../../hooks/useAuth'
 import axios from 'axios'
+import { useLocation, useNavigate } from 'react-router'
 
 const PurchaseModal = ({ closeModal, isOpen, service }) => {
   // Total Price Calculation
   const { user } = useAuth()
+  const navigate = useNavigate();
+const location = useLocation();
   const { _id, name, category, price, description, image, seller,
     quantity } = service || {}
   const handlePayment = async () => {
+    if (!user) {
+    navigate("/login", {
+      state: { from: location.pathname },
+      replace: true,
+    });
+    return;
+  }
     const paymentInfo = {
       // include `serviceId` to match backend's expected metadata key
       serviceId: _id,
