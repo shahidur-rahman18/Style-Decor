@@ -133,7 +133,7 @@ async function run() {
         success_url: `${process.env.CLIENT_DOMAIN}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.CLIENT_DOMAIN}/service/${paymentInfo?.serviceId}`,
       });
-      res.send({ url: session.url })
+      res.send({ url: session.url });
     });
 
     app.post("/payment-success", async (req, res) => {
@@ -234,6 +234,32 @@ async function run() {
         res.send(result);
       }
     );
+
+    // DELETE SERVICE BY ID
+    app.delete("/services/:id", verifyJWT, verifySELLER, async (req, res) => {
+      const id = req.params.id;
+
+      const query = { _id: new ObjectId(id) };
+      const result = await servicesCollection.deleteOne(query);
+
+      res.send(result);
+    });
+
+    // UPDATE SERVICE
+    app.patch("/services/:id", verifyJWT, verifySELLER, async (req, res) => {
+      const id = req.params.id;
+      const updatedData = req.body;
+
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: updatedData,
+      };
+
+      const result = await servicesCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+
+    
 
     // save or update a user in db
     app.post("/user", async (req, res) => {

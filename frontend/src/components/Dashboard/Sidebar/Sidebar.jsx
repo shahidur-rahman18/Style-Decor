@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import useAuth from "../../../hooks/useAuth";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import logo from "../../../assets/images/logo-flat.png";
+
 // Icons
 import { GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
@@ -37,7 +37,7 @@ const Sidebar = () => {
         <div>
           <div className="block cursor-pointer p-4 font-bold">
             <Link to="/">
-              <img src={logo} alt="logo" width="100" height="100" />
+              <img src='/frontend/public/logo-styledecor.png' alt="logo" width="100" height="100" />
             </Link>
           </div>
         </div>
