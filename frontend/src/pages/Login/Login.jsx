@@ -33,7 +33,7 @@ const Login = () => {
 
     try {
       //User Login
-      await signIn(email, password);
+      
       //User Login
       const { user } = await signIn(email, password);
       await saveOrUpdateUser({

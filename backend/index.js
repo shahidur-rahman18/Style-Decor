@@ -235,7 +235,7 @@ async function run() {
       }
     );
 
-    // DELETE SERVICE BY ID
+    // DELETE SERVICE BY ID with verification
     app.delete("/services/:id", verifyJWT, verifySELLER, async (req, res) => {
       const id = req.params.id;
 

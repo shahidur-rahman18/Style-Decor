@@ -53,7 +53,7 @@ const SignUp = () => {
       toast.error(err?.message);
     }
   };
-
+  
 
   // Handle Google Signin
   const handleGoogleSignIn = async () => {
