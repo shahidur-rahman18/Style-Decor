@@ -1,16 +1,65 @@
-# React + Vite
+# Styl Decor | Smart Home & Ceremony Decoration Booking System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Styl Decor** is a premium, full-stack appointment management platform designed for decoration businesses. It streamlines the process of booking in-studio consultations and on-site decoration services, managing professional decorators, and tracking project progress in real-time.
 
-Currently, two official plugins are available:
+## 🔗 Live Links
+- **Live Client Site:** [https://style-decor-client-self.vercel.app/](https://style-decor-client-self.vercel.app/)
+- **Server API:** [https://style-decor-server-ruby.vercel.app/](https://style-decor-server-ruby.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 📖 Project Purpose
+Local decoration businesses often struggle with walk-in crowds and unorganized on-site coordination. **Styl Decor** solves these issues by providing a centralized digital hub for:
+- Efficient scheduling and availability management.
+- Transparent project tracking for clients.
+- Automated service assignment for decorator teams.
+- Seamless payment processing.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Key Features
+- **Role-Based Access Control (RBAC):** Dedicated dashboards for Admins, Decorators, and Users.
+- **Dynamic Service Booking:** Search and filter decoration packages by category and budget.
+- **On-Site Workflow Tracking:** Real-time updates from "Planning Phase" to "Setup in Progress" to "Completed."
+- **Interactive Coverage Map:** Integration with **React Leaflet** to show service areas.
+- **Secure Payments:** Integrated **Stripe** payment gateway with transaction history.
+- **Modern UI/UX:** Built with **DaisyUI** and **Framer Motion** for a smooth, responsive, and animated user experience.
+- **JWT Authentication:** Secure private routes using JSON Web Tokens and Firebase.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🛠️ Tech Stack Used
+
+| Category | Technologies |
+| :--- | :--- |
+| **Frontend** | React.js, Tailwind CSS, DaisyUI, Framer Motion, React Leaflet |
+| **Backend** | Node.js, Express.js |
+| **Database** | MongoDB |
+| **Auth & Security** | Firebase Auth, JWT (JSON Web Token), Dotenv |
+| **Payment** | Stripe API |
+| **Image Hosting** | ImgBB / Cloudinary |
+
+### Primary NPM Packages:
+`framer-motion`, `axios`, `react-router-dom`, `react-leaflet`, `stripe`, `sweetalert2`, `react-hook-form`, `lucide-react`, `dotenv`, `cors`, `jsonwebtoken`.
+
+---
+
+## 🔐 Demo Credentials
+
+Explore the platform using the following accounts:
+
+* **Admin Role**
+    * **Email:** `admin@gmail.com`
+    * **Password:** `Admin@123`
+* **Decorator Role (Seller)**
+    * **Email:** `seller@gmail.com`
+    * **Password:** `Seller@123`
+
+---
+
+## ⚙️ Installation & Local Setup
+
+1. **Clone the repositories:**
+   ```bash
+   git clone [https://github.com/your-username/styl-decor-client.git](https://github.com/your-username/styl-decor-client.git)
+   git clone [https://github.com/your-username/styl-decor-server.git](https://github.com/your-username/styl-decor-server.git)
