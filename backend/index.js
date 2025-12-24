@@ -220,6 +220,34 @@ async function run() {
       }
     );
 
+    // update order status
+    app.patch("/orders/status/:id", async (req, res) => {
+      const id = req.params.id;
+      const { status } = req.body;
+
+      const result = await ordersCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { status } }
+      );
+
+      res.send(result);
+    });
+
+    // delete order
+    app.delete("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+
+      const result = await ordersCollection.deleteOne({
+        _id: new ObjectId(id),
+      });
+
+      if (result.deletedCount === 0) {
+        return res.status(404).send({ message: "Order not found" });
+      }
+
+      res.send(result);
+    });
+
     // get all plants for a seller by email from serviceCollection
     app.get(
       "/my-inventory/:email",
@@ -258,8 +286,6 @@ async function run() {
       const result = await servicesCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
-
-    
 
     // save or update a user in db
     app.post("/user", async (req, res) => {

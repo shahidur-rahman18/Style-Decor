@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DeleteModal from "../../Modal/DeleteModal";
-const SellerOrderDataRow = ({ order }) => {
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+const SellerOrderDataRow = ({ order, refetch }) => {
   let [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
 
@@ -9,15 +10,41 @@ const SellerOrderDataRow = ({ order }) => {
   // ✅ status state
   const [status, setStatus] = useState(order?.status || "Pending");
 
-  const handleStatusChange = (e) => {
+  const axiosSecure = useAxiosSecure();
+
+  const handleStatusChange = async (e) => {
     const value = e.target.value;
 
-    if (value === "In Progress") {
-      setStatus("Pending");
-    }
+    let updatedStatus = "Pending";
 
     if (value === "Delivered") {
-      setStatus("Delivered");
+      updatedStatus = "Delivered";
+    }
+
+    // 1️⃣ Update UI instantly
+    setStatus(updatedStatus);
+
+    // 2️⃣ Update Database
+    try {
+      await axiosSecure.patch(`/orders/status/${order._id}`, {
+        status: updatedStatus,
+      });
+
+      // 3️⃣ Refresh table data
+      refetch();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axiosSecure.delete(`/orders/${order._id}`);
+
+      refetch(); // 🔄 refresh table
+      closeModal();
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -75,7 +102,14 @@ const SellerOrderDataRow = ({ order }) => {
             <span className="relative">Cancel</span>
           </button>
         </div>
-        <DeleteModal isOpen={isOpen} closeModal={closeModal} />
+        <DeleteModal
+          isOpen={isOpen}
+          closeModal={() => setIsOpen(false)}
+           id={order._id}   
+          handleDelete={handleDelete}
+          queryKey={["orders"]}
+          deleteUrl="/orders"
+        />
       </td>
     </tr>
   );

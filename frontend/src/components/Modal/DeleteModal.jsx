@@ -3,12 +3,12 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-const DeleteModal = ({ closeModal, isOpen, id, queryKey }) => {
+const DeleteModal = ({ closeModal, isOpen, id, queryKey, deleteUrl }) => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
   const { mutate: deleteService, isLoading } = useMutation({
     mutationFn: async () => {
-      const res = await axiosSecure.delete(`/services/${id}`);
+      const res = await axiosSecure.delete(`${deleteUrl}/${id}`);
       return res.data;
     },
     onSuccess: () => {
