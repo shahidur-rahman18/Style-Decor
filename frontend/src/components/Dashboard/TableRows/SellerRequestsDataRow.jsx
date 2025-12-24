@@ -33,7 +33,7 @@ const SellerRequestsDataRow = ({ req, refetch }) => {
             aria-hidden="true"
             className="absolute inset-0 bg-amber-500 opacity-50 rounded-full"
           ></span>
-          <span className="relative">Make Seller</span>
+          <span className="relative">Make Decorator</span>
         </span>
       </td>
     </tr>

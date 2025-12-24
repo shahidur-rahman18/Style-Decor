@@ -7,7 +7,7 @@ const AdminMenu = () => {
       <MenuItem icon={FaUserCog} label='Manage Users' address='manage-users' />
        <MenuItem
         icon={FaUserTag}
-        label='Seller Requests'
+        label='Decorator Requests'
         address='seller-requests'
       />
       
