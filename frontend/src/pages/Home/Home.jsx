@@ -16,7 +16,7 @@ const Home = () => {
       <Reveal>
         <div className="text-center mb-12 py-12 ">
           <h3 className="font-bold  text-primary tracking-widest">
-            Our Services
+            Our Servicess
           </h3>
           <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 mt-2">
             Decoration Packages
