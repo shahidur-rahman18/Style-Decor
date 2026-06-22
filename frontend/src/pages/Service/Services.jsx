@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Plants from "../../components/Home/Plants";
+import ServiceList from "../../components/Service/ServiceList";
 import Container from "../../components/Shared/Container";
 import { Filter, Search } from "lucide-react";
 import Reveal from "../../components/Animation/Reveal";
@@ -98,7 +98,7 @@ const Services = () => {
 
       {/* Card List */}
       <div className="py-10 ">
-        <Plants
+        <ServiceList
           searchText={searchText}
           categoryFilter={category}
           budget={budget}

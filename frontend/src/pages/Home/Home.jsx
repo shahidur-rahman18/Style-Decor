@@ -1,4 +1,5 @@
-import Plants from "../../components/Home/Plants";
+import ServiceList from "../../components/Service/ServiceList";
+import Container from "../../components/Shared/Container";
 import Hero from "./Hero";
 import Reveal from "../../components/Animation/Reveal";
 import DecoratorTeam from "../../components/Home/DecoratorTeam";
@@ -27,7 +28,9 @@ const Home = () => {
           </p>
         </div>
       </Reveal>
-      <Plants limit={3} />
+      <Container>
+        <ServiceList limit={3} />
+      </Container>
       <Reveal>
         <div className="flex items-center justify-center py-12">
           <Link

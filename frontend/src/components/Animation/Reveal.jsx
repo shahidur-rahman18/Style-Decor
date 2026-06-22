@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion, useAnimation, useInView } from "framer-motion";
-const Reveal = ({children}) => {
+const Reveal = ({ children, className = "" }) => {
   const ref = useRef(null);
 
   const isInView = useInView(ref, { once: true });
@@ -15,8 +15,9 @@ const Reveal = ({children}) => {
     }
   }, [isInView,mainControls]);
   return (
-    <div ref={ref} className="relative overflow-hidden">
+    <div ref={ref} className={`relative overflow-hidden ${className}`}>
       <motion.div
+        className={className}
         variants={{
           hidden: { opacity: 0, y: 75 },
 

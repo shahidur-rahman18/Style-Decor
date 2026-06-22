@@ -20,6 +20,7 @@ app.use(
     origin: [
       process.env.CLIENT_DOMAIN,
       "https://style-decor-client-self.vercel.app",
+      "http://localhost:5173",
     ],
     credentials: true,
     optionSuccessStatus: 200,
